@@ -130,11 +130,11 @@ fun PieChart(
             val padding = (sideSize * pieChartConfig.chartPadding) / 100f
             val size = Size(sideSize.toFloat() - padding, sideSize.toFloat() - padding)
 
-            val pathPortion = remember {
+            val pathPortion = remember(pieChartData.slices) {
                 Animatable(initialValue = 0f)
             }
             if (pieChartConfig.isAnimationEnable) {
-                LaunchedEffect(key1 = Unit) {
+                LaunchedEffect(key1 = pieChartData.slices) {
                     pathPortion.animateTo(
                         1f, animationSpec = tween(pieChartConfig.animationDuration)
                     )
@@ -144,7 +144,7 @@ fun PieChart(
                 Modifier
                     .width(sideSize.dp)
                     .height(sideSize.dp)
-                    .pointerInput(true) {
+                    .pointerInput(pieChartData.slices) {
                         detectTapGestures {
                             val clickedAngle = convertTouchEventPointToAngle(
                                 sideSize.toFloat(),
